@@ -51,9 +51,9 @@ class ResultScreen extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: isLandscape ? 8.0 : size.height * 0.02),
+          SizedBox(height: isLandscape ? 12.0 : 20.0),
           Container(
-            padding: EdgeInsets.all(isLandscape ? 14.0 : size.width * 0.05),
+            padding: EdgeInsets.all(isLandscape ? 14.0 : 20.0),
             decoration: BoxDecoration(
               color: const Color(0xFFAED581).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
@@ -80,7 +80,7 @@ class ResultScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: isLandscape ? 16.0 : size.height * 0.04),
+          SizedBox(height: isLandscape ? 16.0 : 24.0),
 
           // bagian review dari jawaban
           Text(
@@ -91,7 +91,7 @@ class ResultScreen extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: isLandscape ? 8.0 : size.height * 0.015),
+          SizedBox(height: isLandscape ? 8.0 : 12.0),
 
           // list soal dengan mengambil ResultItemCard
           ...List.generate(questions.length, (index) {
@@ -100,7 +100,7 @@ class ResultScreen extends StatelessWidget {
               userAnswer: userAnswers[index],
             );
           }),
-          SizedBox(height: isLandscape ? 16.0 : size.height * 0.04),
+          SizedBox(height: isLandscape ? 16.0 : 24.0),
 
           // Restart Button
           CustomButton(
@@ -115,7 +115,7 @@ class ResultScreen extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: size.height * 0.03),
+          const SizedBox(height: 24.0),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import 'gradients.dart';
 
 class AppScalfoder extends StatelessWidget {
@@ -27,7 +28,7 @@ class AppScalfoder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Centralized MediaQuery responsiveness for the entire app layout
+    // Centralized MediaQuery & Adaptive Layout responsiveness for all devices
     final size = MediaQuery.of(context).size;
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
@@ -52,68 +53,108 @@ class AppScalfoder extends StatelessWidget {
                   width: double.infinity,
                   height: calculatedHeaderHeight,
                   decoration: AppGradients.headerBoxDecoration(size),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.06,
-                      vertical: isLandscape ? 4.0 : size.height * 0.01,
-                    ),
-                    child: horizontalHeader
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: isLandscape ? 20.0 : size.width * 0.05,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 1.2,
-                              ),
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 600),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.06,
+                              vertical: isLandscape ? 4.0 : size.height * 0.01,
                             ),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (headerImageAsset != null) ...[
-                                Image.asset(
-                                  headerImageAsset!,
-                                  height: isLandscape ? 60.0 : size.width * 0.26,
-                                  fit: BoxFit.contain,
-                                ),
-                                SizedBox(height: isLandscape ? 4.0 : size.height * 0.01),
-                              ] else if (headerIcon != null) ...[
-                                Icon(
-                                  headerIcon,
-                                  size: isLandscape ? 60.0 : size.width * 0.26,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(height: isLandscape ? 4.0 : size.height * 0.01),
-                              ],
-                              Text(
-                                title,
-                                style: TextStyle(
-                                  fontSize: isLandscape ? 22.0 : size.width * 0.06,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  letterSpacing: 1.5,
-                                ),
-                              ),
-                              if (subtitle.isNotEmpty) ...[
-                                const SizedBox(height: 2),
-                                Text(
-                                  subtitle,
-                                  style: TextStyle(
-                                    fontSize: isLandscape ? 12.0 : size.width * 0.035,
-                                    color: Colors.white70,
+                            child: horizontalHeader
+                                ? Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      title,
+                                      style: TextStyle(
+                                        fontSize: isLandscape ? 20.0 : size.width * 0.05,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (headerImageAsset != null) ...[
+                                        Image.asset(
+                                          headerImageAsset!,
+                                          height: isLandscape ? 60.0 : size.width * 0.26,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        SizedBox(height: isLandscape ? 4.0 : size.height * 0.01),
+                                      ] else if (headerIcon != null) ...[
+                                        Icon(
+                                          headerIcon,
+                                          size: isLandscape ? 60.0 : size.width * 0.26,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(height: isLandscape ? 4.0 : size.height * 0.01),
+                                      ],
+                                      Text(
+                                        title,
+                                        style: TextStyle(
+                                          fontSize: isLandscape ? 22.0 : size.width * 0.06,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      if (subtitle.isNotEmpty) ...[
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          subtitle,
+                                          style: TextStyle(
+                                            fontSize: isLandscape ? 12.0 : size.width * 0.035,
+                                            color: Colors.white70,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ],
                           ),
+                        ),
+                      ),
+
+                      // Theme Switcher Button in Top-Right Corner
+                      Positioned(
+                        top: 4,
+                        right: 8,
+                        child: ValueListenableBuilder<ThemeMode>(
+                          valueListenable: themeModeNotifier,
+                          builder: (context, currentMode, child) {
+                            final isDark = currentMode == ThemeMode.dark;
+                            return IconButton(
+                              tooltip: isDark ? 'Mode Terang' : 'Mode Gelap',
+                              icon: Icon(
+                                isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                              onPressed: () {
+                                themeModeNotifier.value =
+                                    isDark ? ThemeMode.light : ThemeMode.dark;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              Padding(
-                padding: EdgeInsets.all(isLandscape ? 16.0 : size.width * 0.08),
-                child: child,
+
+              // Adaptive Centered Container for Tablet & Web View Layout
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: Padding(
+                    padding: EdgeInsets.all(isLandscape ? 16.0 : size.width * 0.08),
+                    child: child,
+                  ),
+                ),
               ),
             ],
           ),

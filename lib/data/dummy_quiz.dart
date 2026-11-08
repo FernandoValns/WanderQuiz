@@ -60,8 +60,8 @@ final List<Question> wanderQuizQuestions = [
   ),
   Question(
     index: 10,
-    questionText: '10. Tokoh militer dan pemimpin agung Prancis pada lukisan berikut bernama...',
-    options: ['Napoleon Bonaparte', 'Julius Caesar', 'Alexander the Great', 'Winston Churchill'],
+    questionText: '10. berasal dari mana kah Tokoh militer lukisan berikut ...',
+    options: ['Perancis', 'Roma', 'Rusia', 'Amerika'],
     correctAnswerIndex: 0,
     imageAsset: 'assets/image/napoleon.jpg',
   ),

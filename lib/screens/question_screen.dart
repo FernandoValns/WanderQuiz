@@ -17,7 +17,7 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  // state variables yang diambil dari welcome_screen
+  // state variables yang terhubung dengan welcome screen
   int _currentIndex = 0;
   int? _selectedOptionIndex;
   late final List<int?> _userAnswers;
