@@ -16,9 +16,10 @@ class OptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      margin: EdgeInsets.symmetric(vertical: isLandscape ? 4.0 : size.height * 0.01),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -26,8 +27,8 @@ class OptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Ink(
             padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.05,
-              vertical: size.height * 0.018,
+              horizontal: isLandscape ? 16.0 : size.width * 0.05,
+              vertical: isLandscape ? 12.0 : size.height * 0.018,
             ),
             decoration: BoxDecoration(
               color: isSelected
@@ -49,12 +50,12 @@ class OptionCard extends StatelessWidget {
                       : Icons.radio_button_unchecked_rounded,
                   color: isSelected ? const Color(0xFFAED581) : Colors.grey,
                 ),
-                SizedBox(width: size.width * 0.04),
+                SizedBox(width: isLandscape ? 12.0 : size.width * 0.04),
                 Expanded(
                   child: Text(
                     optionText,
                     style: TextStyle(
-                      fontSize: size.width * 0.04,
+                      fontSize: isLandscape ? 14.0 : size.width * 0.04,
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       color: theme.colorScheme.onSurface,
                     ),

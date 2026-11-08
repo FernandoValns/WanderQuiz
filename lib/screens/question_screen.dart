@@ -6,6 +6,7 @@ import '../widgets/option_card.dart';
 import '../widgets/custom_button.dart';
 import 'result_screen.dart';
 
+
 class QuestionScreen extends StatefulWidget {
   final String playerName;
 
@@ -16,19 +17,24 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  // state variables yang diambil dari welcome_screen
   int _currentIndex = 0;
   int? _selectedOptionIndex;
+  late final List<int?> _userAnswers;
 
-  // Track user answers for each question index
-  final List<int?> _userAnswers = List.filled(wanderQuizQuestions.length, null);
+  @override
+  void initState() {
+    super.initState();
+    _userAnswers = List.filled(wanderQuizQuestions.length, null);
+  }
 
-  void _selectOption(int index) {
+  void _onOptionSelected(int index) {
     setState(() {
       _selectedOptionIndex = index;
     });
   }
 
-  void _nextQuestion() {
+  void _onNextQuestion() {
     if (_selectedOptionIndex == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -39,13 +45,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
       return;
     }
 
-    // Save user answer
+    // Save answer in state array so if rotated answer is not reset
     _userAnswers[_currentIndex] = _selectedOptionIndex;
 
     if (_currentIndex < wanderQuizQuestions.length - 1) {
       setState(() {
         _currentIndex++;
-        // Restore previous answer if already answered, or null
         _selectedOptionIndex = _userAnswers[_currentIndex];
       });
     } else {
@@ -66,14 +71,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     final currentQuestion = wanderQuizQuestions[_currentIndex];
 
     return AppScalfoder(
       title: 'WANDER QUIZ',
       subtitle: '',
       showHeader: true,
-      horizontalHeader: true, // Compact  header for question screen
+      horizontalHeader: true,
       child: Column(
+        key: const PageStorageKey('question_screen_flow'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Progress bar
@@ -81,12 +88,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
             value: (_currentIndex + 1) / wanderQuizQuestions.length,
             backgroundColor: Colors.grey.withValues(alpha: 0.2),
             valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFAED581)),
-            minHeight: 6,
+            minHeight: isLandscape ? 4 : 6,
             borderRadius: BorderRadius.circular(3),
           ),
-          SizedBox(height: size.height * 0.02),
+          SizedBox(height: isLandscape ? size.height * 0.015 : size.height * 0.02),
 
-          // User Name
+          // User Name above the question
           Row(
             children: [
               const Icon(Icons.person_outline_rounded, size: 16, color: Colors.grey),
@@ -94,21 +101,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
               Text(
                 'Pengguna: ${widget.playerName}',
                 style: TextStyle(
-                  fontSize: size.width * 0.038,
+                  fontSize: isLandscape ? size.width * 0.03 : size.width * 0.038,
                   color: Colors.grey[700],
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.015),
+          SizedBox(height: isLandscape ? size.height * 0.01 : size.height * 0.015),
 
           // Question Card Widget
           QuestionWidget(
             questionText: currentQuestion.questionText,
             imageAsset: currentQuestion.imageAsset,
           ),
-          SizedBox(height: size.height * 0.03),
+          SizedBox(height: isLandscape ? size.height * 0.02 : size.height * 0.03),
 
           // Option Cards
           ...List.generate(
@@ -116,17 +123,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
             (index) => OptionCard(
               optionText: currentQuestion.options[index],
               isSelected: _selectedOptionIndex == index,
-              onTap: () => _selectOption(index),
+              onTap: () => _onOptionSelected(index),
             ),
           ),
-          SizedBox(height: size.height * 0.04),
+          SizedBox(height: isLandscape ? size.height * 0.03 : size.height * 0.04),
 
           // Action Button
           CustomButton(
             text: _currentIndex == wanderQuizQuestions.length - 1
                 ? 'Selesai & Lihat Skor'
                 : 'Selanjutnya',
-            onPressed: _nextQuestion,
+            onPressed: _onNextQuestion,
           ),
         ],
       ),

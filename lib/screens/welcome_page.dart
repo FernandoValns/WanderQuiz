@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       title: 'WANDER QUIZ',
       subtitle: 'Jelajahi Pengetahuan Geografi Dunia!',
       headerImageAsset: 'assets/image/globe_.png',
+      headerHeightFactor: 0.28,
       child: Form(
         key: _formKey,
         child: Column(

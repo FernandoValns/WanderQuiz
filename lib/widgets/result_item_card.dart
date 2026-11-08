@@ -15,12 +15,13 @@ class ResultItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
-    
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     final bool isOverallCorrect = userAnswer != null && userAnswer == question.correctAnswerIndex;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: size.height * 0.012),
-      padding: EdgeInsets.all(size.width * 0.04),
+      margin: EdgeInsets.symmetric(vertical: isLandscape ? 6.0 : size.height * 0.012),
+      padding: EdgeInsets.all(isLandscape ? 12.0 : size.width * 0.04),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(16),
@@ -39,14 +40,14 @@ class ResultItemCard extends StatelessWidget {
               Icon(
                 isOverallCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
                 color: isOverallCorrect ? Colors.green : Colors.red,
-                size: 22,
+                size: isLandscape ? 18 : 22,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Soal ${question.index}: ${question.questionText}',
                   style: TextStyle(
-                    fontSize: size.width * 0.04,
+                    fontSize: isLandscape ? 15.0 : size.width * 0.04,
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onSurface,
                   ),
@@ -54,27 +55,25 @@ class ResultItemCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.01),
+          SizedBox(height: isLandscape ? 6.0 : size.height * 0.01),
           if (question.imageAsset != null) ...[
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                color: Colors.black12,
                 constraints: BoxConstraints(
-                  maxHeight: size.height * 0.16,
+                  maxHeight: isLandscape ? 120.0 : size.height * 0.16,
                 ),
                 child: Image.asset(
                   question.imageAsset!,
-                  width: double.infinity,
-                  fit: BoxFit.contain, // Changed from cover to contain
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.015),
+            SizedBox(height: isLandscape ? 6.0 : size.height * 0.015),
           ],
-          SizedBox(height: size.height * 0.005),
+          SizedBox(height: isLandscape ? 4.0 : size.height * 0.005),
 
-          // Display all options with color coding
+          // Option list review
           ...List.generate(question.options.length, (optIndex) {
             final bool isThisCorrectAnswer = optIndex == question.correctAnswerIndex;
             final bool isThisUserChoice = optIndex == userAnswer;
@@ -97,10 +96,10 @@ class ResultItemCard extends StatelessWidget {
             }
 
             return Container(
-              margin: EdgeInsets.symmetric(vertical: size.height * 0.005),
+              margin: EdgeInsets.symmetric(vertical: isLandscape ? 3.0 : size.height * 0.005),
               padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.03,
-                vertical: size.height * 0.012,
+                horizontal: isLandscape ? 10.0 : size.width * 0.03,
+                vertical: isLandscape ? 8.0 : size.height * 0.012,
               ),
               decoration: BoxDecoration(
                 color: bgColor,
@@ -113,16 +112,16 @@ class ResultItemCard extends StatelessWidget {
               child: Row(
                 children: [
                   if (optionIcon != null) ...[
-                    Icon(optionIcon, color: iconColor, size: 18),
-                    const SizedBox(width: 8),
+                    Icon(optionIcon, color: iconColor, size: 16),
+                    const SizedBox(width: 6),
                   ] else ...[
-                    const SizedBox(width: 26),
+                    const SizedBox(width: 22),
                   ],
                   Expanded(
                     child: Text(
                       question.options[optIndex],
                       style: TextStyle(
-                        fontSize: size.width * 0.036,
+                        fontSize: isLandscape ? 13.0 : size.width * 0.036,
                         fontWeight: (isThisCorrectAnswer || isThisUserChoice) 
                             ? FontWeight.bold 
                             : FontWeight.normal,

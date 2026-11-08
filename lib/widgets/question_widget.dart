@@ -14,10 +14,11 @@ class QuestionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(size.width * 0.05),
+      padding: EdgeInsets.all(isLandscape ? 16.0 : size.width * 0.05),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(20),
@@ -32,26 +33,24 @@ class QuestionWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                color: Colors.black12,
                 constraints: BoxConstraints(
-                  maxHeight: size.height * 0.22,
+                  maxHeight: isLandscape ? 160.0 : size.height * 0.22,
                 ),
                 child: Image.asset(
                   imageAsset!,
-                  width: double.infinity,
-                  fit: BoxFit.contain, // Changed from cover to contain so images are not cropped
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.02),
+            SizedBox(height: isLandscape ? 10.0 : size.height * 0.02),
           ],
           Text(
             questionText,
             style: TextStyle(
-              fontSize: size.width * 0.048,
+              fontSize: isLandscape ? 16.0 : size.width * 0.048,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onSurface,
-              height: 1.4,
+              height: 1.3,
             ),
             textAlign: TextAlign.center,
           ),

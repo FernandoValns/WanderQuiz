@@ -31,29 +31,29 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     final score = _calculateScore();
     final total = questions.length;
 
     return AppScalfoder(
       title: 'HASIL PETUALANGAN',
       subtitle: 'Tinjauan Kuis Geografi',
-      headerHeightFactor: 0.18,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Greeting & Score Card
+          // hasil skor dan nama pengguna
           Text(
             'Ini skor Kamu, $playerName!',
             style: TextStyle(
-              fontSize: size.width * 0.06,
+              fontSize: isLandscape ? 20.0 : size.width * 0.06,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onSurface,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: size.height * 0.02),
+          SizedBox(height: isLandscape ? 8.0 : size.height * 0.02),
           Container(
-            padding: EdgeInsets.all(size.width * 0.05),
+            padding: EdgeInsets.all(isLandscape ? 14.0 : size.width * 0.05),
             decoration: BoxDecoration(
               color: const Color(0xFFAED581).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
@@ -72,7 +72,7 @@ class ResultScreen extends StatelessWidget {
                 Text(
                   '$score / $total',
                   style: TextStyle(
-                    fontSize: size.width * 0.1,
+                    fontSize: isLandscape ? 32.0 : size.width * 0.1,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF689F38),
                   ),
@@ -80,27 +80,27 @@ class ResultScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: size.height * 0.04),
+          SizedBox(height: isLandscape ? 16.0 : size.height * 0.04),
 
-          // Interactive Review Section Header
+          // bagian review dari jawaban
           Text(
             'Rincian Jawaban (Review)',
             style: TextStyle(
-              fontSize: size.width * 0.045,
+              fontSize: isLandscape ? 16.0 : size.width * 0.045,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: size.height * 0.015),
+          SizedBox(height: isLandscape ? 8.0 : size.height * 0.015),
 
-          // Review List using ResultItemCard reusable widget
+          // list soal dengan mengambil ResultItemCard
           ...List.generate(questions.length, (index) {
             return ResultItemCard(
               question: questions[index],
               userAnswer: userAnswers[index],
             );
           }),
-          SizedBox(height: size.height * 0.04),
+          SizedBox(height: isLandscape ? 16.0 : size.height * 0.04),
 
           // Restart Button
           CustomButton(
