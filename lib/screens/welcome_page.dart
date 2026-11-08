@@ -37,15 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     return AppScalfoder(
-      title: 'TEKAKU',
-      subtitle: 'Tebak Kataku & Lelucon Seru',
+      title: 'WANDER QUIZ',
+      subtitle: 'Jelajahi Pengetahuan Geografi Dunia!',
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Selamat Datang!',
+              'Pengguna Baru!',
               style: TextStyle(
                 fontSize: size.width * 0.06,
                 fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Masukkan nama kamu untuk mulai menebak lelucon.',
+              'Masukkan nama pengguna sebelum memulai kuis geografi.',
               style: TextStyle(
                 fontSize: size.width * 0.038,
                 color: Colors.grey[600],
@@ -66,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'Nama Kamu',
-                hintText: 'Contoh: Budi Kocak',
+                labelText: 'Nama Pengguna',
+                hintText: 'Contoh: Budi',
                 prefixIcon: const Icon(Icons.person_outline),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Nama tidak boleh kosong ya!';
+                  return 'Nama pengguna tidak boleh kosong ya!';
                 }
                 return null;
               },
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 elevation: 2,
               ),
               child: Text(
-                'Mulai Kuis Sekarang',
+                'Mulai Kuis',
                 style: TextStyle(
                   fontSize: size.width * 0.045,
                   fontWeight: FontWeight.bold,
