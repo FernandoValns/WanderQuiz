@@ -39,13 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppScalfoder(
       title: 'WANDER QUIZ',
       subtitle: 'Jelajahi Pengetahuan Geografi Dunia!',
+      headerImageAsset: 'assets/image/globe_.png',
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Pengguna Baru!',
+              'selamat datang Pengguna!',
               style: TextStyle(
                 fontSize: size.width * 0.06,
                 fontWeight: FontWeight.bold,
@@ -62,12 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: size.height * 0.04),
+            SizedBox(height: size.height * 0.03),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: 'Nama Pengguna',
-                hintText: 'Contoh: Budi',
+                hintText: 'Contoh: Fernando',
                 prefixIcon: const Icon(Icons.person_outline),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),

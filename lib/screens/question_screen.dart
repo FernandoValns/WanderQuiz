@@ -4,6 +4,7 @@ import '../widgets/app_scalfoder.dart';
 import '../widgets/question_widget.dart';
 import '../widgets/option_card.dart';
 import '../widgets/custom_button.dart';
+import 'result_screen.dart';
 
 class QuestionScreen extends StatefulWidget {
   final String playerName;
@@ -16,8 +17,10 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   int _currentIndex = 0;
-  int _score = 0;
   int? _selectedOptionIndex;
+
+  // Track user answers for each question index
+  final List<int?> _userAnswers = List.filled(wanderQuizQuestions.length, null);
 
   void _selectOption(int index) {
     setState(() {
@@ -36,31 +39,25 @@ class _QuestionScreenState extends State<QuestionScreen> {
       return;
     }
 
-    // Check if answer is correct
-    if (_selectedOptionIndex == wanderQuizQuestions[_currentIndex].correctAnswerIndex) {
-      _score++;
-    }
+    // Save user answer
+    _userAnswers[_currentIndex] = _selectedOptionIndex;
 
     if (_currentIndex < wanderQuizQuestions.length - 1) {
       setState(() {
         _currentIndex++;
-        _selectedOptionIndex = null;
+        // Restore previous answer if already answered, or null
+        _selectedOptionIndex = _userAnswers[_currentIndex];
       });
     } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Kuis Selesai!'),
-          content: Text('Skor kamu: $_score dari ${wanderQuizQuestions.length}'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context); // Return to welcome page
-              },
-              child: const Text('Selesai'),
-            ),
-          ],
+      // Navigate to ResultScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            playerName: widget.playerName,
+            userAnswers: _userAnswers,
+            questions: wanderQuizQuestions,
+          ),
         ),
       );
     }
@@ -73,9 +70,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     return AppScalfoder(
       title: 'WANDER QUIZ',
-      subtitle: 'Soal ${currentQuestion.index} dari ${wanderQuizQuestions.length}',
+      subtitle: '',
       showHeader: true,
-      headerHeightFactor: 0.18,
+      horizontalHeader: true, // Compact  header for question screen
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -89,7 +86,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ),
           SizedBox(height: size.height * 0.02),
 
-          // User Name above the question (as requested)
+          // User Name
           Row(
             children: [
               const Icon(Icons.person_outline_rounded, size: 16, color: Colors.grey),
@@ -107,7 +104,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
           SizedBox(height: size.height * 0.015),
 
           // Question Card Widget
-          QuestionWidget(questionText: currentQuestion.questionText),
+          QuestionWidget(
+            questionText: currentQuestion.questionText,
+            imageAsset: currentQuestion.imageAsset,
+          ),
           SizedBox(height: size.height * 0.03),
 
           // Option Cards
